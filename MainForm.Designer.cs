@@ -97,6 +97,7 @@
             TransferButton.TabIndex = 3;
             TransferButton.Text = "Przelej pieniądze";
             TransferButton.UseVisualStyleBackColor = true;
+            TransferButton.Click += CreateTransfer;
             // 
             // MainForm
             // 

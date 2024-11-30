@@ -39,8 +39,4 @@
             this.amount = amount;
         }
     }
-    public class WrongTokenException : Exception
-    {
-        public WrongTokenException() : base("Wrong token provided") { }
-    }
 }

@@ -23,9 +23,4 @@
             this.error = error;
         }
     }
-
-    public class WrongCredentialsException : Exception
-    {
-        public WrongCredentialsException() : base("Wrong credentials provided") { }
-    }
 }

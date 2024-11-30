@@ -1,6 +1,5 @@
 ﻿using System.Net.Http.Json;
 using System.Text.Json;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BankApp.HTTP
 {
@@ -8,7 +7,7 @@ namespace BankApp.HTTP
     {
         public static string GetBaseUrl()
         {
-           return "http://localhost/bankapi";
+            return "http://localhost/bankapi";
         }
 
         public static string GetUrlForRoute(string route)
@@ -39,12 +38,12 @@ namespace BankApp.HTTP
             if (token != null && error == null)
             {
                 return token;
-            } else
+            }
+            else
             {
                 throw new WrongCredentialsException();
             }
         }
-
 
         public static AccountDetails GetAccountDetails(AccountDetailsData data)
         {
@@ -73,5 +72,58 @@ namespace BankApp.HTTP
                 throw new WrongTokenException();
             }
         }
+
+        public static void CreateTransfer(NewTransferData data)
+        {
+            HttpClient client = new HttpClient();
+            string url = GetUrlForRoute("transfer/new");
+            HttpResponseMessage response =
+                client.PostAsJsonAsync(url, data).Result;
+
+            string json = response.Content.ReadAsStringAsync().Result;
+            NewTransferResponse? responseData = JsonSerializer.Deserialize<NewTransferResponse>(json);
+
+            string? error = responseData.error;
+
+            if (error != null)
+            {
+                switch (error)
+                {
+                    case "Invalid token":
+                        throw new WrongTokenException();
+                    case "Cannot create a transfer with negative amount.":
+                        throw new NegativeTransferAmountException();
+                    case "Your balance is too low to do this transfer.":
+                        throw new BalanceTooLowException();
+                    case "The target account do not exist.":
+                        throw new WrongTargetAccountException();
+                }
+            }
+        }
+    }
+
+    public class WrongCredentialsException : Exception
+    {
+        public WrongCredentialsException() { }
+    }
+
+    public class WrongTokenException : Exception
+    {
+        public WrongTokenException() { }
+    }
+
+    public class BalanceTooLowException : Exception
+    {
+        public BalanceTooLowException() { }
+    }
+
+    public class NegativeTransferAmountException : Exception
+    {
+        public NegativeTransferAmountException() { }
+    }
+
+    public class WrongTargetAccountException : Exception
+    {
+        public WrongTargetAccountException() { }
     }
 }
