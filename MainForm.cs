@@ -5,21 +5,42 @@ namespace BankApp
     public partial class MainForm : Form
     {
         public string? token;
+        private bool loginDialogLaunched = false;
 
         public MainForm()
         {
             InitializeComponent();
-            new LoginForm(this).ShowDialog();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            if(this.token != null)
+            LoginForm loginDialog = new LoginForm(this);
+            
+            if(!loginDialogLaunched)
             {
-                this.TestLabel.Text = this.token;
-            } else
+                loginDialog.ShowDialog();
+                loginDialogLaunched = true;
+            }
+
+            if (this.token == null && !loginDialog.Enabled && this.loginDialogLaunched)
             {
-                this.TestLabel.Text = "Brak tokenu";
+                MessageBox.Show("Wyst¹pi³ b³¹d podczas sprawdzania sesji logowania. Spróbuj zalogowaæ siê ponownie.", "B³¹d sesji", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
+            }
+
+            try
+            {
+                AccountDetails accountDetails = BankApi.GetAccountDetails(new AccountDetailsData(token!));
+
+                // przeliczamy wartoœæ w groszach na z³otówki
+                float amount = accountDetails.amount / 100;
+                this.AccountNoLabel.Text = "Numer rachunku: " + accountDetails.accountNo;
+                this.NameLabel.Text = "Nazwa rachunku: " + accountDetails.name;
+                this.AmountLabel.Text = amount + "PLN";
+            } catch(WrongTokenException)
+            {
+                MessageBox.Show("Wyst¹pi³ b³¹d podczas sprawdzania sesji logowania. Spróbuj zalogowaæ siê ponownie.", "B³¹d sesji", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
             }
         }
     }

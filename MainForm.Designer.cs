@@ -28,33 +28,95 @@
         /// </summary>
         private void InitializeComponent()
         {
-            TestLabel = new Label();
+            tableLayoutPanel1 = new TableLayoutPanel();
+            AmountLabel = new Label();
+            NameLabel = new Label();
+            AccountNoLabel = new Label();
+            TransferButton = new Button();
+            tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
-            // TestLabel
+            // tableLayoutPanel1
             // 
-            TestLabel.AutoSize = true;
-            TestLabel.Location = new Point(334, 146);
-            TestLabel.Name = "TestLabel";
-            TestLabel.Size = new Size(16, 15);
-            TestLabel.TabIndex = 0;
-            TestLabel.Text = "...";
+            tableLayoutPanel1.ColumnCount = 1;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.Controls.Add(AmountLabel, 0, 2);
+            tableLayoutPanel1.Controls.Add(NameLabel, 0, 1);
+            tableLayoutPanel1.Controls.Add(AccountNoLabel, 0, 0);
+            tableLayoutPanel1.Controls.Add(TransferButton, 0, 3);
+            tableLayoutPanel1.Location = new Point(33, 38);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 4;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            tableLayoutPanel1.Size = new Size(200, 220);
+            tableLayoutPanel1.TabIndex = 1;
+            // 
+            // AmountLabel
+            // 
+            AmountLabel.AutoSize = true;
+            AmountLabel.Dock = DockStyle.Fill;
+            AmountLabel.Location = new Point(3, 110);
+            AmountLabel.Name = "AmountLabel";
+            AmountLabel.Size = new Size(194, 55);
+            AmountLabel.TabIndex = 2;
+            AmountLabel.Text = "...";
+            AmountLabel.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // NameLabel
+            // 
+            NameLabel.AutoSize = true;
+            NameLabel.Dock = DockStyle.Fill;
+            NameLabel.Location = new Point(3, 55);
+            NameLabel.Name = "NameLabel";
+            NameLabel.Size = new Size(194, 55);
+            NameLabel.TabIndex = 1;
+            NameLabel.Text = "Nazwa rachunku: ...";
+            NameLabel.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // AccountNoLabel
+            // 
+            AccountNoLabel.AutoSize = true;
+            AccountNoLabel.Dock = DockStyle.Fill;
+            AccountNoLabel.Location = new Point(3, 0);
+            AccountNoLabel.Name = "AccountNoLabel";
+            AccountNoLabel.Size = new Size(194, 55);
+            AccountNoLabel.TabIndex = 0;
+            AccountNoLabel.Text = "Numer rachunku: ...";
+            AccountNoLabel.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // TransferButton
+            // 
+            TransferButton.Dock = DockStyle.Fill;
+            TransferButton.Location = new Point(3, 168);
+            TransferButton.Name = "TransferButton";
+            TransferButton.Size = new Size(194, 49);
+            TransferButton.TabIndex = 3;
+            TransferButton.Text = "Przelej pieniądze";
+            TransferButton.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Controls.Add(TestLabel);
+            ClientSize = new Size(268, 291);
+            Controls.Add(tableLayoutPanel1);
             Name = "MainForm";
-            Text = "Form1";
+            Text = "Bank";
             Load += MainForm_Load;
+            tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel1.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
-
-        private Label TestLabel;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Label AccountNoLabel;
+        private Label AmountLabel;
+        private Label NameLabel;
+        private Button TransferButton;
     }
 }
