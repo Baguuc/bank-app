@@ -73,6 +73,29 @@ namespace BankApp.HTTP
             }
         }
 
+        public static Transfer[] GetAccountTransfers(AccountTransfersData data)
+        {
+            HttpClient client = new HttpClient();
+            string url = GetUrlForRoute("account/transfers");
+            HttpResponseMessage response =
+                client.PostAsJsonAsync(url, data).Result;
+
+            string json = response.Content.ReadAsStringAsync().Result;
+            AccountTransfersResponse? responseData = JsonSerializer.Deserialize<AccountTransfersResponse>(json);
+
+            Transfer[]? transfers = responseData.transfers;
+            string? error = responseData.error;
+
+            if (transfers != null && error == null)
+            {
+                return transfers;
+            }
+            else
+            {
+                throw new WrongTokenException();
+            }
+        }
+
         public static void CreateTransfer(NewTransferData data)
         {
             HttpClient client = new HttpClient();

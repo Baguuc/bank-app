@@ -32,6 +32,28 @@ namespace BankApp
             }
         }
 
+        private void RefreshAccountTransfers()
+        {
+            try
+            {
+               Transfer[] accountTransfers = BankApi.GetAccountTransfers(new AccountTransfersData(token!));
+
+                this.TransferList.Items.Add("Data przelewu - Odbiorca - Kwota");
+
+               foreach(Transfer transfer in accountTransfers)
+               {
+                    // przeliczamy wartoœæ w groszach na z³otówki
+                    float amount = transfer.amount / 100;
+                    this.TransferList.Items.Add($"{transfer.timestamp} - {transfer.targetName} - {amount} PLN");
+               }
+            }
+            catch (WrongTokenException)
+            {
+                MessageBox.Show("Wyst¹pi³ b³¹d podczas sprawdzania sesji logowania. Spróbuj zalogowaæ siê ponownie.", "B³¹d sesji", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
+            }
+        }
+
         private void MainForm_Load(object sender, EventArgs e)
         {
             LoginForm loginDialog = new LoginForm(this);
@@ -49,12 +71,14 @@ namespace BankApp
             }
 
             RefreshAccountDetails();
+            RefreshAccountTransfers();
         }
 
         private void CreateTransfer(object sender, EventArgs e)
         {
             (new NewTransferForm(this)).ShowDialog();
             RefreshAccountDetails();
+            RefreshAccountTransfers();
         }
     }
 }
